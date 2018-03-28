@@ -10,18 +10,18 @@ exports.registerPlugin = (cli, options)=>{
       path: options[key]
     })
   }
-  cli.registerHook(['route:forward','preview:forward'], (req, crossData, cb)=>{
+  cli.registerHook(['route:forward','preview:forward'],async (req, crossData)=>{
     let pathname = req.path;
     if(options[pathname]){
       crossData.realPath = options[pathname]
-      return cb(null)
+      return
     }
     for(let i = 0, length = queue.length; i < length; i++){
       if(queue[i].reg.test(pathname)){
         crossData.realPath = queue[i].path
-        return cb(null)
+        return
       }
     }
-    cb(null)
+    return
   })
 }
